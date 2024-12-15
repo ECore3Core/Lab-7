@@ -7,6 +7,7 @@ import java.util.Random;
 public class Matrix implements Serializable{
     private double[][] matrix;
     public Matrix(int x, int y){
+        matrix = new double[x][y];
         if(x < 0 || y < 0){
             throw new IllegalArgumentException("Один из аргументов меньше 0");
         }

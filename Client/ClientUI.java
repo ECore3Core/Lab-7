@@ -57,13 +57,13 @@ public class ClientUI extends JFrame{
 
         sendButton.addActionListener(e -> {
                 try {
-                    if (tryIntParse(fieldX.getText()) <= 0 || tryIntParse(fieldY.getText()) <= 0) {
+                    if (tryParse(fieldX.getText()) <= 0 || tryParse(fieldY.getText()) <= 0) {
                         fieldX.setText("");
                         fieldY.setText("");
                         answerLabel.setText("Введены неверные значения");
                     } else {
-                        matrix = new Matrix(tryIntParse(fieldX.getText()), tryIntParse(fieldY.getText()));
-                        updateMatrixTable();  // Обновление таблицы с матрицей
+                        matrix = new Matrix(tryParse(fieldX.getText()), tryParse(fieldY.getText()));
+                        updateMatrixTable();
                     }
                 } catch (Exception exception) {
                     System.err.println(exception);
@@ -100,7 +100,7 @@ public class ClientUI extends JFrame{
         footerPanel.add(scrollPane, BorderLayout.NORTH);
     }
 
-    public int tryIntParse(String value) {
+    public int tryParse(String value) {
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException e) {
