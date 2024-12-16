@@ -16,7 +16,6 @@ public class ClientUI extends JFrame{
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Панель для ввода данных
         JPanel inputPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -25,6 +24,12 @@ public class ClientUI extends JFrame{
         fieldX = new JTextField(10);
         fieldY = new JTextField(10);
         sendButton = new JButton("Отправить");
+
+        sendButton.setBackground(new Color(60, 179, 113));
+        sendButton.setForeground(Color.WHITE);
+        sendButton.setFont(new Font("Arial", Font.BOLD, 14));
+        sendButton.setFocusPainted(false);
+        sendButton.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
 
         answerLabel = new JLabel("Полученный ответ: ", JLabel.CENTER);
 
@@ -48,10 +53,11 @@ public class ClientUI extends JFrame{
         inputPanel.add(sendButton, gbc);
 
         add(inputPanel, BorderLayout.NORTH);
+        
 
         matrixLabel = new JLabel("Матрица не задана", JLabel.CENTER);
-        matrixLabel.setFont(new Font("Serif", Font.BOLD, 16));
-        matrixLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        matrixLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        matrixLabel.setBorder(BorderFactory.createTitledBorder("Матрица"));
         add(matrixLabel, BorderLayout.CENTER);
 
         footerPanel = new JPanel(new BorderLayout());
@@ -81,7 +87,7 @@ public class ClientUI extends JFrame{
 
     private void updateMatrixLabel() {
         if(matrix != null){
-            matrixLabel.setText("<html>" + matrix.toString().replaceAll("\n", "<br>") + "</html>");
+            matrixLabel.setText("<html><pre>" + matrix.toString() + "</pre></html>");
         }
     }
 

@@ -59,7 +59,7 @@ public class Matrix implements Serializable{
         StringBuffer resultString = new StringBuffer();
         for(int i = 0; i < getRows(); i++){
             for(int j = 0; j < getColumns(); j++){
-                resultString.append(getElement(i, j) + " ");
+                resultString.append(String.format("%5.1f", getElement(i, j)));
             }
             resultString.append("\n");
         }
