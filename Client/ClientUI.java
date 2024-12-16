@@ -1,9 +1,7 @@
 package Client;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
 public class ClientUI extends JFrame{
     private JTextField fieldX, fieldY;
@@ -18,6 +16,7 @@ public class ClientUI extends JFrame{
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
+        // Панель для ввода данных
         JPanel inputPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -48,7 +47,12 @@ public class ClientUI extends JFrame{
         gbc.gridwidth = 2;
         inputPanel.add(sendButton, gbc);
 
-        add(inputPanel, BorderLayout.CENTER);
+        add(inputPanel, BorderLayout.NORTH);
+
+        matrixLabel = new JLabel("Матрица не задана", JLabel.CENTER);
+        matrixLabel.setFont(new Font("Serif", Font.BOLD, 16));
+        matrixLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        add(matrixLabel, BorderLayout.CENTER);
 
         footerPanel = new JPanel(new BorderLayout());
         footerPanel.add(answerLabel, BorderLayout.SOUTH);
@@ -56,19 +60,19 @@ public class ClientUI extends JFrame{
         add(footerPanel, BorderLayout.SOUTH);
 
         sendButton.addActionListener(e -> {
-                try {
-                    if (tryParse(fieldX.getText()) <= 0 || tryParse(fieldY.getText()) <= 0) {
-                        fieldX.setText("");
-                        fieldY.setText("");
-                        answerLabel.setText("Введены неверные значения");
-                    } else {
-                        matrix = new Matrix(tryParse(fieldX.getText()), tryParse(fieldY.getText()));
-                        matrixLabel.setText(matrix.toString());
-
-                    }
-                } catch (Exception exception) {
-                    System.err.println(exception);
+            try {
+                if (tryParse(fieldX.getText()) <= 0 || tryParse(fieldY.getText()) <= 0) {
+                    fieldX.setText("");
+                    fieldY.setText("");
+                    answerLabel.setText("Введены неверные значения");
+                } else {
+                    matrix = new Matrix(tryParse(fieldX.getText()), tryParse(fieldY.getText()));
+                    updateMatrixLabel();
+                    answerLabel.setText("Матрица обновлена.");
                 }
+            } catch (Exception exception) {
+                System.err.println(exception);
+            }
         });
 
         setSize(600, 400);
@@ -77,7 +81,7 @@ public class ClientUI extends JFrame{
 
     private void updateMatrixLabel() {
         if(matrix != null){
-            matrixLabel.setText(matrix.toString());
+            matrixLabel.setText("<html>" + matrix.toString().replaceAll("\n", "<br>") + "</html>");
         }
     }
 
