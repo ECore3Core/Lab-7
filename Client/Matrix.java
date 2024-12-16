@@ -12,11 +12,9 @@ public class Matrix implements Serializable{
             throw new IllegalArgumentException("Один из аргументов меньше 0");
         }
         Random rnd = new Random();
-        double min = -10;
-        double max = 11;
         for(int i = 0; i < x; i++){
             for(int j = 0; j < y; j++){
-                matrix[i][j] = min + (max - min) * rnd.nextDouble();
+                matrix[i][j] = rnd.nextInt(21) - 10;
             }
         }
     }
@@ -49,11 +47,22 @@ public class Matrix implements Serializable{
         for(int i = 0; i < matrix.getRows(); i++){
             for(int j = 0; j < matrix.getColumns(); j++){
                 double currentNumber = matrix.getElement(i, j);
-                if((int)currentNumber % 2 == 0){
+                if((int)currentNumber % 2 != 0){
                     result += currentNumber;
                 }
             }
         }
         return result;
+    }
+    @Override
+    public String toString(){
+        StringBuffer resultString = new StringBuffer();
+        for(int i = 0; i < getRows(); i++){
+            for(int j = 0; j < getColumns(); j++){
+                resultString.append(getElement(i, j) + " ");
+            }
+            resultString.append("\n");
+        }
+        return resultString.toString();
     }
 }

@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
 public class ClientUI extends JFrame{
     private JTextField fieldX, fieldY;
     private JButton sendButton;
-    private JTable matrixTable;
+    private JLabel matrixLabel;
     private Matrix matrix;
     private JLabel answerLabel;
     private JPanel footerPanel;
@@ -63,7 +63,8 @@ public class ClientUI extends JFrame{
                         answerLabel.setText("Введены неверные значения");
                     } else {
                         matrix = new Matrix(tryParse(fieldX.getText()), tryParse(fieldY.getText()));
-                        updateMatrixTable();
+                        matrixLabel.setText(matrix.toString());
+
                     }
                 } catch (Exception exception) {
                     System.err.println(exception);
@@ -74,30 +75,10 @@ public class ClientUI extends JFrame{
         setVisible(true);
     }
 
-    private void updateMatrixTable() {
-        int rows = matrix.getRows();
-        int cols = matrix.getColumns();
-
-        String[][] tableData = new String[rows][cols];
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                tableData[i][j] = String.valueOf(matrix.getElement(i, j));
-            }
+    private void updateMatrixLabel() {
+        if(matrix != null){
+            matrixLabel.setText(matrix.toString());
         }
-
-        String[] columnNames = new String[cols];
-        for (int i = 0; i < cols; i++) {
-            columnNames[i] = "Колонка " + (i + 1);
-        }
-
-        DefaultTableModel tableModel = new DefaultTableModel(tableData, columnNames);
-        matrixTable = new JTable(tableModel);
-        matrixTable.setPreferredScrollableViewportSize(new Dimension(400, 100));
-        matrixTable.setFillsViewportHeight(true);
-
-        JScrollPane scrollPane = new JScrollPane(matrixTable);
-        footerPanel.add(scrollPane, BorderLayout.NORTH);
     }
 
     public int tryParse(String value) {
