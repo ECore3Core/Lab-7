@@ -67,11 +67,13 @@ public class ClientUI extends JFrame{
 
         sendButton.addActionListener(e -> {
             try {
-                if (tryParse(fieldX.getText()) <= 0 || tryParse(fieldY.getText()) <= 0) {
+                if (tryParse(fieldX.getText()) <= 0 || tryParse(fieldY.getText()) <= 0 
+                    || tryParse(fieldX.getText()) > 9 || tryParse(fieldY.getText()) > 9) {
                     fieldX.setText("");
                     fieldY.setText("");
                     answerLabel.setText("Введены неверные значения");
-                } else {
+                }
+                else {
                     matrix = new Matrix(tryParse(fieldX.getText()), tryParse(fieldY.getText()));
                     updateMatrixLabel();
                     answerLabel.setText("Матрица обновлена.");
