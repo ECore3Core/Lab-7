@@ -1,4 +1,4 @@
-package Server;
+package common;
 
 import java.io.Serializable;
 import java.util.Random;
@@ -7,11 +7,11 @@ import java.util.Random;
 public class Matrix implements Serializable{
     private double[][] matrix;
     public Matrix(int x, int y){
-        matrix = new double[x][y];
         if(x < 0 || y < 0){
             throw new IllegalArgumentException("Один из аргументов меньше 0");
         }
         Random rnd = new Random();
+        matrix = new double[x][y];
         for(int i = 0; i < x; i++){
             for(int j = 0; j < y; j++){
                 matrix[i][j] = rnd.nextInt(21) - 10;

@@ -2,6 +2,7 @@ package Client;
 
 import java.awt.*;
 import javax.swing.*;
+import common.Matrix;
 
 public class ClientUI extends JFrame{
     private JTextField fieldX, fieldY;
@@ -109,7 +110,7 @@ public class ClientUI extends JFrame{
                     displayResult(result);
                 }
                 catch(Exception exception){
-                    System.out.println(exception + "в ю ай");
+                    exception.printStackTrace();
                 }
             }
             
