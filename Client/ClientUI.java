@@ -5,8 +5,8 @@ import javax.swing.*;
 
 public class ClientUI extends JFrame{
     private JTextField fieldX, fieldY;
-    private JButton sendButton;
-    private JLabel matrixLabel;
+    private JButton createMatrixButton, sendButton;
+    private JLabel matrixLabel, oddSumLabel;
     private Matrix matrix;
     private JLabel answerLabel;
     private JPanel footerPanel;
@@ -23,13 +23,13 @@ public class ClientUI extends JFrame{
 
         fieldX = new JTextField(10);
         fieldY = new JTextField(10);
-        sendButton = new JButton("Отправить");
+        createMatrixButton = new JButton("Создать");
 
-        sendButton.setBackground(new Color(60, 179, 113));
-        sendButton.setForeground(Color.WHITE);
-        sendButton.setFont(new Font("Arial", Font.BOLD, 14));
-        sendButton.setFocusPainted(false);
-        sendButton.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
+        createMatrixButton.setBackground(new Color(60, 179, 113));
+        createMatrixButton.setForeground(Color.WHITE);
+        createMatrixButton.setFont(new Font("Arial", Font.BOLD, 14));
+        createMatrixButton.setFocusPainted(false);
+        createMatrixButton.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
 
         answerLabel = new JLabel("Полученный ответ: ", JLabel.CENTER);
 
@@ -50,7 +50,7 @@ public class ClientUI extends JFrame{
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 2;
-        inputPanel.add(sendButton, gbc);
+        inputPanel.add(createMatrixButton, gbc);
 
         add(inputPanel, BorderLayout.NORTH);
         
@@ -63,9 +63,27 @@ public class ClientUI extends JFrame{
         footerPanel = new JPanel(new BorderLayout());
         footerPanel.add(answerLabel, BorderLayout.SOUTH);
         footerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JPanel newPanel = new JPanel(new BorderLayout());
+        sendButton = new JButton("Отправить");
+        oddSumLabel = new JLabel("", JLabel.CENTER);
+
+        sendButton.setBackground(new Color(70, 130, 180));
+        sendButton.setForeground(Color.WHITE);
+        sendButton.setFont(new Font("Arial", Font.BOLD, 14));
+        sendButton.setFocusPainted(false);
+        sendButton.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
+
+        newPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        newPanel.add(sendButton, BorderLayout.WEST);
+        newPanel.add(oddSumLabel, BorderLayout.EAST);
+
+        footerPanel.add(newPanel, BorderLayout.CENTER);
+        add(footerPanel, BorderLayout.SOUTH);
+        
         add(footerPanel, BorderLayout.SOUTH);
 
-        sendButton.addActionListener(e -> {
+        createMatrixButton.addActionListener(e -> {
             try {
                 if (tryParse(fieldX.getText()) <= 0 || tryParse(fieldY.getText()) <= 0 
                     || tryParse(fieldX.getText()) > 9 || tryParse(fieldY.getText()) > 9) {
@@ -83,6 +101,20 @@ public class ClientUI extends JFrame{
             }
         });
 
+        sendButton.addActionListener(e ->{
+            if(matrix != null){
+                try{
+                    ClientService client = new ClientService();
+                    double result = client.send(matrix);
+                    displayResult(result);
+                }
+                catch(Exception exception){
+                    System.out.println(exception + "в ю ай");
+                }
+            }
+            
+        });
+
         setSize(600, 400);
         setVisible(true);
     }
@@ -91,6 +123,9 @@ public class ClientUI extends JFrame{
         if(matrix != null){
             matrixLabel.setText("<html><pre>" + matrix.toString() + "</pre></html>");
         }
+    }
+    private void displayResult(double oddSum){
+        oddSumLabel.setText(String.valueOf(oddSum));
     }
 
     public int tryParse(String value) {

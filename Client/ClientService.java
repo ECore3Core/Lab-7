@@ -7,27 +7,23 @@ import java.net.Socket;
 
 public class ClientService {
     private final String SERVER_HOST = "localhost";
-    private final int SERVER_PORT = 8080;
+    private final int SERVER_PORT = 8081;
 
     
     public double send(Matrix matrix) throws IOException{
-        try{
-            Socket socket = new Socket(SERVER_HOST, SERVER_PORT);
-
+        try(Socket socket = new Socket(SERVER_HOST, SERVER_PORT);
             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream())){
 
             outputStream.writeObject(matrix);
             outputStream.flush();
             
             double result = inputStream.readDouble();
 
-            socket.close();
-
             return result;
         }
         catch(IOException e){
-            throw new IOException();
+            throw new IOException("ошибка здесь" + e.getMessage());
         }
     }
 }
