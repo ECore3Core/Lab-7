@@ -4,7 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import common.Matrix;
 
-public class ClientUI extends JFrame{
+public class ClientUI extends JFrame {
     private JTextField fieldX, fieldY;
     private JButton createMatrixButton, sendButton;
     private JLabel matrixLabel, oddSumLabel;
@@ -54,12 +54,14 @@ public class ClientUI extends JFrame{
         inputPanel.add(createMatrixButton, gbc);
 
         add(inputPanel, BorderLayout.NORTH);
-        
 
         matrixLabel = new JLabel("Матрица не задана", JLabel.CENTER);
         matrixLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        matrixLabel.setBorder(BorderFactory.createTitledBorder("Матрица"));
-        add(matrixLabel, BorderLayout.CENTER);
+        matrixLabel.setVerticalAlignment(JLabel.TOP);
+
+        JScrollPane scrollPane = new JScrollPane(matrixLabel);
+        scrollPane.setBorder(BorderFactory.createTitledBorder("Матрица"));
+        add(scrollPane, BorderLayout.CENTER);
 
         footerPanel = new JPanel(new BorderLayout());
         footerPanel.add(answerLabel, BorderLayout.SOUTH);
@@ -81,18 +83,15 @@ public class ClientUI extends JFrame{
 
         footerPanel.add(newPanel, BorderLayout.CENTER);
         add(footerPanel, BorderLayout.SOUTH);
-        
-        add(footerPanel, BorderLayout.SOUTH);
 
         createMatrixButton.addActionListener(e -> {
             try {
-                if (tryParse(fieldX.getText()) <= 0 || tryParse(fieldY.getText()) <= 0 
-                    || tryParse(fieldX.getText()) > 9 || tryParse(fieldY.getText()) > 9) {
+                if (tryParse(fieldX.getText()) <= 0 || tryParse(fieldY.getText()) <= 0
+                        || tryParse(fieldX.getText()) > 100 || tryParse(fieldY.getText()) > 100) {
                     fieldX.setText("");
                     fieldY.setText("");
-                    answerLabel.setText("Введены неверные значения");
-                }
-                else {
+                    answerLabel.setText("Введенные значения должны быть целыми числами от 1 до 100");
+                } else {
                     matrix = new Matrix(tryParse(fieldX.getText()), tryParse(fieldY.getText()));
                     updateMatrixLabel();
                     answerLabel.setText("Матрица обновлена.");
@@ -102,18 +101,17 @@ public class ClientUI extends JFrame{
             }
         });
 
-        sendButton.addActionListener(e ->{
-            if(matrix != null){
-                try{
+        sendButton.addActionListener(e -> {
+            if (matrix != null) {
+                try {
                     ClientService client = new ClientService();
                     double result = client.send(matrix);
                     displayResult(result);
-                }
-                catch(Exception exception){
+                } catch (Exception exception) {
                     exception.printStackTrace();
                 }
             }
-            
+
         });
 
         setSize(600, 400);
@@ -121,11 +119,12 @@ public class ClientUI extends JFrame{
     }
 
     private void updateMatrixLabel() {
-        if(matrix != null){
+        if (matrix != null) {
             matrixLabel.setText("<html><pre>" + matrix.toString() + "</pre></html>");
         }
     }
-    private void displayResult(double oddSum){
+
+    private void displayResult(double oddSum) {
         oddSumLabel.setText(String.valueOf(oddSum));
     }
 
